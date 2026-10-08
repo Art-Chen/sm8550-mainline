@@ -66,7 +66,7 @@
 
 	chosen {
 		/* Required for libcamera to allocate buffers when udmabuf is used. */
-		bootargs = "udmabuf.size_limit_mb=256";
+		bootargs = "udmabuf.size_limit_mb=256 console=ttyMSM0,115200n8";
 	};
 
 	fingerprint_fpc {
@@ -170,7 +170,7 @@
 					reg = <1>;
 
 					pmic_glink_ss_in: endpoint {
-						remote-endpoint = <&redriver_ss_out>;
+						remote-endpoint = <&usb_dp_qmpphy_out>;
 					};
 				};
 
@@ -1005,6 +1005,7 @@
 	firmware-name = "qcom/sm8550/sheng/a740_zap.mbn";
 };
 
+/*
 &i2c0 {
 	clock-frequency = <400000>;
 	status = "okay";
@@ -1044,6 +1045,7 @@
 		};
 	};
 };
+*/
 
 &i2c1 {
 	status = "okay";
@@ -1213,7 +1215,7 @@
 		sleep-gpios = <&tlmm 57 GPIO_ACTIVE_LOW>;
 		status-gpios = <&tlmm 56 GPIO_ACTIVE_HIGH>;
 
-		vddio-supply = <&vreg_l12b_1p8>;
+		vddio-supply = <&vreg_l6b_1p8>;
 		dvdd-supply = <&vreg_l13b_3p3>;
 	};
 };
@@ -1330,7 +1332,7 @@
 	qcom,dual-dsi-mode;
 	qcom,sync-dual-dsi;
 	/* DSI1 is slave, so use DSI0 clocks */
-	assigned-clock-parents = <&mdss_dsi0_phy 0>, <&mdss_dsi0_phy 1>;
+	assigned-clock-parents = <&mdss_dsi1_phy 0>, <&mdss_dsi1_phy 1>;
 	status = "okay";
 };
 
@@ -1747,6 +1749,10 @@
 	};
 };
 
+&uart7 {
+       status = "okay";
+};
+
 &uart14 {
 	status = "okay";
 
@@ -1810,7 +1816,7 @@
 };
 
 &usb_dp_qmpphy_out {
-	remote-endpoint = <&redriver_ss_in>;
+	remote-endpoint = <&pmic_glink_ss_in>;
 };
 
 &xo_board {
